@@ -1,0 +1,24 @@
+table{
+  width: 50%;
+}
+
+input.ng-invalid{
+  background-color: red;
+  color: white;
+}
+
+label{
+  margin-right:10px;
+}
+
+.saveEdit{
+  background-color: green;
+}
+
+.cancelEdit{
+  background-color: red;
+}
+
+button{
+  margin-right: 5px;
+}

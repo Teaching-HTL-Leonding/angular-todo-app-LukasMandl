@@ -1,0 +1,109 @@
+<h1>TODO LIST</h1>
+
+<h4>Add Todo</h4>
+<form>
+  <div>
+    <label>Description:
+      <input type="text" id="description" name="description" [(ngModel)] = "todo.description"
+      #description="ngModel" minlength="2" maxlength="50" required="">
+    </label>
+    <p [hidden]="description.pristine || !description.errors?.['required']">
+      Please enter something.
+    </p>
+    <p [hidden]="description.pristine || !description.errors?.['minlength']">
+      Description is too short, please make it longer.
+    </p>
+  </div>
+  <div>
+    <label>Assigned Person:
+      <input type="text" id="assignedPerson" name="assignedPerson" [(ngModel)] = "todo.assignedPersonName"
+      #assignedPerson="ngModel" minlength="2" maxlength="50">
+    </label>
+    <p [hidden]="assignedPerson.pristine || !assignedPerson.errors?.['minlength']">
+      Assigned Person name is too short, please make it longer.
+    </p>
+  </div>
+  <div>
+    <label>Done:
+      <input type="checkbox" id="done" name="done" [(ngModel)] = "todo.done">
+    </label>
+  </div>
+</form>
+<button (click)="saveTodo()" [disabled]="isEditing">Save</button>
+
+<h4>Filter</h4>
+<form>
+  <div>
+    <label>Assigned Person:
+      <input type="text" id="filterAssignedPerson" name="filterAssignedPerson" [(ngModel)]="filter.assignedPerson">
+    </label>
+    <label>Done:
+      <input type="checkbox" id="filterDone" name="filterDone" [(ngModel)]="filter.done">
+    </label>
+    <label>Apply Filter:
+      <input type="checkbox" id="filterApply" name="filterApply" [(ngModel)]="filter.apply">
+    </label>
+  </div>
+</form>
+
+
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Assigned Person</th>
+    <th>Done Flag</th>
+    <th>Delete</th>
+    <th>Edit</th>
+  </tr>
+
+  <tr *ngFor="let row of getTodos(); let rowIx = index">
+    <td>{{row.description}}</td>
+    <td>{{row.assignedPersonName}}</td>
+    <td><input type="checkbox" disabled [checked]="row.done"></td>
+    <td><button (click)="deleteTodo(rowIx)">Delete</button></td>
+    <td><button (click)="startEditing(rowIx)">Edit</button></td>
+  </tr>
+
+</table>
+
+
+<form [hidden]="!isEditing">
+  <h2>EDIT</h2>
+  <tr>
+    <div>
+      <label>Description:
+        <input type="text" name="editingDescription" id="editingDescription" [(ngModel)] = "todoInEdit.description" #descriptionEdit ="ngModel" minlength="2" maxlength="50" required>
+      </label>
+      <p [hidden]="descriptionEdit.pristine || !descriptionEdit.errors?.['required']">
+        Please enter something.
+      </p>
+      <p [hidden]="descriptionEdit.pristine || !descriptionEdit.errors?.['minlength']">
+        Description is too short, please make it longer.
+      </p>
+    </div>
+  </tr>
+  <tr>
+    <div>
+      <label>AssignedPerson:
+        <input type="text" name="editingAssignedPerson" id="editingAssignedPerson" [(ngModel)] = "todoInEdit.assignedPersonName" #assignedPersonEdit="ngModel" minlength="2" maxlength="50" >
+      </label>
+      <p [hidden]="assignedPersonEdit.pristine || !assignedPersonEdit.errors?.['minlength']">
+        Assigned Person name is too short, please make it longer.
+      </p>
+    </div>
+  </tr>
+  <tr>
+    <div>
+      <label>Done:
+        <input type="checkbox" name="editingDone" id="editingDone" [(ngModel)] = "todoInEdit.done">
+      </label>
+    </div>
+  </tr>
+  <tr>
+    <div>
+      <button (click)="saveEdit()" class="saveEdit">Save</button>
+      <button (click)="clearEdit()" class="cancelEdit">Cancel</button>
+    </div>
+  </tr>
+</form>
+<router-outlet></router-outlet>
